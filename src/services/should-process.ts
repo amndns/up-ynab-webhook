@@ -28,7 +28,8 @@ export function shouldProcess(
   eventType: WebhookEventType,
   transaction: UpTransaction
 ): ProcessDecision {
-  const { status, transactionType } = transaction.attributes;
+  const { status, transactionType, cardPurchaseMethod } =
+    transaction.attributes;
 
   // PING and DELETED events are never processed
   if (eventType === "PING" || eventType === "TRANSACTION_DELETED") {
@@ -36,6 +37,25 @@ export function shouldProcess(
       process: false,
       reason: `EVENT_TYPE:${eventType}`,
     };
+  }
+
+  // Handle null transactionType (common for HELD card purchases)
+  // If cardPurchaseMethod exists, treat it as a card purchase
+  if (transactionType === null && cardPurchaseMethod) {
+    // Card purchases with HELD status should be processed immediately
+    if (status === "HELD") {
+      return {
+        process: true,
+        reason: "CARD_PURCHASE_HELD",
+      };
+    }
+    // Already settled (shouldn't happen, but handle it)
+    if (status === "SETTLED") {
+      return {
+        process: true,
+        reason: "CARD_PURCHASE_SETTLED",
+      };
+    }
   }
 
   // Unknown transaction type → Log and ignore
