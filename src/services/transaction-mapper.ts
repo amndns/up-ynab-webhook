@@ -29,9 +29,6 @@ export function mapToYnabTransaction(
 
   // Build memo with useful context
   const memoParts: string[] = [];
-  if (attrs.transactionType !== "Purchase") {
-    memoParts.push(attrs.transactionType);
-  }
   if (attrs.foreignAmount) {
     memoParts.push(
       `${attrs.foreignAmount.currencyCode} ${attrs.foreignAmount.value}`
@@ -50,7 +47,6 @@ export function mapToYnabTransaction(
       amount,
       payee_id: scenario.transferPayeeId,
       memo,
-      cleared: "cleared" as const,
       approved: true,
       import_id: importId,
     };
@@ -63,7 +59,6 @@ export function mapToYnabTransaction(
     amount,
     category_id: categorization?.categoryId || undefined,
     memo,
-    cleared: "cleared" as const,
     approved: categorization?.approved ?? false,
     import_id: importId,
   };

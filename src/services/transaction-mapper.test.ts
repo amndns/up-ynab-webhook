@@ -98,7 +98,6 @@ describe("transaction mapper", () => {
 
       const result = mapToYnabTransaction(txn, scenario);
 
-      expect(result.memo).toContain("International Purchase");
       expect(result.memo).toContain("TWD -355.00");
     });
 
