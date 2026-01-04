@@ -65,7 +65,9 @@ export async function handleUpWebhook(c: Context<{ Bindings: Env }>) {
     return c.json({ ok: true }, 200);
   }
 
-  const logger = createTransactionLogger(transactionId);
+  // Get Cloudflare request ID for distributed tracing
+  const requestId = c.req.header("cf-ray");
+  const logger = createTransactionLogger(transactionId, requestId);
 
   try {
     // 5. Fetch full transaction
