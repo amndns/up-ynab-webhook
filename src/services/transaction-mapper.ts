@@ -56,12 +56,11 @@ export function mapToYnabTransaction(
     };
   }
 
-  // Payment scenarios use payee_name and category
+  // Regular transactions - just category and amount, no payee
   return {
     account_id: scenario.ynabAccountId,
     date,
     amount,
-    payee_name: attrs.description,
     category_id: categorization?.categoryId || undefined,
     memo,
     cleared: "cleared" as const,

@@ -70,7 +70,7 @@ describe("transaction mapper", () => {
       expect(result.account_id).toBe(YNAB_ACCOUNTS.UP_PAYROLL);
       expect(result.date).toBe("2025-01-04");
       expect(result.amount).toBe(-50000); // milliunits
-      expect(result.payee_name).toBe("Woolworths");
+      expect(result.payee_name).toBeUndefined(); // No payee for regular transactions
       expect(result.category_id).toBe("groceries-id");
       expect(result.approved).toBe(true);
       expect(result.import_id).toBe("test-id-123");
