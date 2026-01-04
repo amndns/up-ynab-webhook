@@ -1,21 +1,26 @@
 {
-  "name": "cloudflare-workers-openapi",
-  "version": "0.0.1",
+  "name": "up-ynab-webhook",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
     "start": "wrangler dev",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
-    "chanfana": "^2.6.3",
     "hono": "^4.6.20",
+    "ynab": "^2.10.0",
+    "ai": "^4.3.0",
+    "@ai-sdk/google": "^1.2.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "22.13.0",
-    "@types/service-worker-mock": "^2.0.4",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.0",
     "wrangler": "^4.54.0"
   }
 }
