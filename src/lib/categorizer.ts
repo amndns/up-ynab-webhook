@@ -62,13 +62,14 @@ export async function categorizeTransaction(
 ): Promise<CategorizationOutput> {
   // Build the description string from available data
   const descriptionParts = [
+    input.rawText, // Raw transaction text (most detailed)
     input.parentCategory,
     input.category,
     input.message,
   ].filter(Boolean);
 
   const descriptionString =
-    descriptionParts.length > 0 ? descriptionParts.join(" ") : "";
+    descriptionParts.length > 0 ? descriptionParts.join(" | ") : "";
 
   try {
     const google = createGoogleGenerativeAI({ apiKey });

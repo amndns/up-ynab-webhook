@@ -133,6 +133,7 @@ export async function handleUpWebhook(c: Context<{ Bindings: Env }>) {
       categorization = await categorizeTransaction(
         {
           description: transaction.attributes.description,
+          rawText: transaction.attributes.rawText,
           parentCategory:
             transaction.relationships.parentCategory?.data?.id ?? null,
           category: transaction.relationships.category?.data?.id ?? null,

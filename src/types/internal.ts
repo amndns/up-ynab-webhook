@@ -55,6 +55,7 @@ export interface ScenarioConfig {
 
 export interface CategorizationInput {
   description: string;
+  rawText: string | null;
   parentCategory: string | null;
   category: string | null;
   message: string | null;
