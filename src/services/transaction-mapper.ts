@@ -23,7 +23,7 @@ export function mapToYnabTransaction(
   categorization?: { categoryId: string | null; approved: boolean }
 ): ynab.NewTransaction {
   const attrs = transaction.attributes;
-  const importId = `UP:${transaction.id}`;
+  const importId = transaction.id;
   const date = attrs.settledAt?.split("T")[0] ?? attrs.createdAt.split("T")[0];
   const amount = toYnabMilliunits(attrs.amount.valueInBaseUnits);
 

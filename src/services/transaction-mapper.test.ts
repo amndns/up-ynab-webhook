@@ -73,7 +73,7 @@ describe("transaction mapper", () => {
       expect(result.payee_name).toBe("Woolworths");
       expect(result.category_id).toBe("groceries-id");
       expect(result.approved).toBe(true);
-      expect(result.import_id).toBe("UP:test-id-123");
+      expect(result.import_id).toBe("test-id-123");
     });
 
     it("sets approved to false when category is uncertain", () => {
@@ -135,7 +135,7 @@ describe("transaction mapper", () => {
       expect(result.payee_name).toBeUndefined();
       expect(result.category_id).toBeUndefined();
       expect(result.approved).toBe(true);
-      expect(result.import_id).toBe("UP:test-id-123");
+      expect(result.import_id).toBe("test-id-123");
     });
   });
 

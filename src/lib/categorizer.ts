@@ -73,7 +73,7 @@ export async function categorizeTransaction(
   try {
     const google = createGoogleGenerativeAI({ apiKey });
     const { text } = await generateText({
-      model: google("gemini-2.5-flash-preview-05-20"),
+      model: google("gemini-2.5-flash"),
       system: CATEGORIZATION_SYSTEM_PROMPT,
       prompt: `Please categorize the given transaction below:
 - **Name**: ${input.description}
