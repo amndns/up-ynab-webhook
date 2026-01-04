@@ -14,6 +14,7 @@ import { mapToYnabTransaction } from "../services/transaction-mapper";
 import { categorizeTransaction } from "../lib/categorizer";
 import { createTransaction } from "../services/ynab-service";
 import { createTransactionLogger } from "../utils/logger";
+import { isAcceptedUpAccount } from "../config/accounts";
 
 interface Env {
   UP_API_TOKEN: string;
@@ -77,7 +78,18 @@ export async function handleUpWebhook(c: Context<{ Bindings: Env }>) {
       c.env.UP_API_TOKEN
     );
 
-    // 6. Check if we should process
+    // 6. Validate account ID (only process SPENDING and SAVER)
+    const sourceAccountId = transaction.relationships.account.data.id;
+
+    if (!isAcceptedUpAccount(sourceAccountId)) {
+      logger.ignored("UNACCEPTED_ACCOUNT", {
+        accountId: sourceAccountId,
+        description: transaction.attributes.description,
+      });
+      return c.json({ ok: true }, 200);
+    }
+
+    // 7. Check if we should process
     const decision = shouldProcess(eventType, transaction);
 
     if (!decision.process) {
@@ -99,7 +111,7 @@ export async function handleUpWebhook(c: Context<{ Bindings: Env }>) {
       status: transaction.attributes.status,
     });
 
-    // 7. Determine scenario
+    // 8. Determine scenario
     const scenario = resolveScenario(transaction);
 
     if (!scenario) {
@@ -114,7 +126,7 @@ export async function handleUpWebhook(c: Context<{ Bindings: Env }>) {
       description: scenario.description,
     });
 
-    // 8. Categorize if needed
+    // 9. Categorize if needed
     let categorization;
     if (scenario.needsCategory) {
       logger.info("Categorizing transaction");
@@ -135,14 +147,14 @@ export async function handleUpWebhook(c: Context<{ Bindings: Env }>) {
       });
     }
 
-    // 9. Map to YNAB transaction
+    // 10. Map to YNAB transaction
     const ynabTransaction = mapToYnabTransaction(
       transaction,
       scenario,
       categorization
     );
 
-    // 10. Create YNAB transaction
+    // 11. Create YNAB transaction
     logger.info("Creating YNAB transaction");
     const result = await createTransaction(
       ynabTransaction,

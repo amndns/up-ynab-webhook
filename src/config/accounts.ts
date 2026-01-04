@@ -51,3 +51,26 @@ export const UP_TO_YNAB_TRANSFER_PAYEE: Record<string, string> = {
   [UP_ACCOUNTS.SPENDING]: YNAB_TRANSFER_PAYEES.TO_PAYROLL,
   [UP_ACCOUNTS.SAVER]: YNAB_TRANSFER_PAYEES.TO_SAVINGS,
 };
+
+// ============================================================================
+// VALIDATION HELPERS
+// ============================================================================
+
+/**
+ * Up Bank accounts we process transactions from.
+ * Only SPENDING and SAVER - JOINT_2UP transactions are ignored.
+ */
+const ACCEPTED_UP_ACCOUNT_IDS = new Set<string>([
+  UP_ACCOUNTS.SPENDING,
+  UP_ACCOUNTS.SAVER,
+]);
+
+/**
+ * Check if we should process transactions from this Up Bank account
+ *
+ * @param accountId - Up Bank account ID from transaction
+ * @returns true if we process transactions from this account
+ */
+export function isAcceptedUpAccount(accountId: string): boolean {
+  return ACCEPTED_UP_ACCOUNT_IDS.has(accountId);
+}

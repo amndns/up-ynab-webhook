@@ -13,6 +13,7 @@
  * ⚠️ MODIFY THIS SET to change which types wait for settlement.
  */
 export const PROCESS_ON_SETTLED_ONLY = new Set([
+  "Payment", // Generic payment type (e.g., Wise, other services)
   "Pay Anyone",
   "Direct Debit",
   "Salary",
@@ -32,6 +33,7 @@ export const KNOWN_TRANSACTION_TYPES = new Set([
   "ATM Withdrawal",
 
   // Bank transfers (process on SETTLED)
+  "Payment", // Generic payment type (e.g., Wise, other services)
   "Pay Anyone",
   "Direct Debit",
   "Salary",
