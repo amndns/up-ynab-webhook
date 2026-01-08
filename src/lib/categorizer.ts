@@ -32,6 +32,7 @@ export const CATEGORIZATION_SYSTEM_PROMPT = `You are an expert in categorizing f
     - Subscriptions: Recurring payments for personal software, online services, or digital content used for personal reasons.
     - Unintended: Unexpected and necessary expenses arising from emergencies or unforeseen situations.
     - Stocks: Transfers of funds specifically designated for your stock brokerage account.
+    - Home Ownership: Savings specifically designated for home ownership and investment, including house deposits and renovations.
     - Business: All expenses directly related to your side hustle or professional activities, including software subscriptions used for business purposes.
     - Gym: Your regular membership fees for a fitness facility.
     - Care: Expenses related to personal well-being and appearance, such as haircuts, manicures/pedicures, and the purchase of skincare or cosmetic products.

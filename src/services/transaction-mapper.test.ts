@@ -74,6 +74,7 @@ describe("transaction mapper", () => {
       expect(result.category_id).toBe("groceries-id");
       expect(result.approved).toBe(true);
       expect(result.import_id).toBe("test-id-123");
+      expect(result.memo).toBe("Woolworths"); // Merchant info in memo
     });
 
     it("sets approved to false when category is uncertain", () => {
@@ -98,7 +99,7 @@ describe("transaction mapper", () => {
 
       const result = mapToYnabTransaction(txn, scenario);
 
-      expect(result.memo).toContain("TWD -355.00");
+      expect(result.memo).toBe("EZ Fly | TWD -355.00");
     });
 
     it("includes message in memo", () => {
@@ -107,7 +108,33 @@ describe("transaction mapper", () => {
 
       const result = mapToYnabTransaction(txn, scenario);
 
-      expect(result.memo).toContain("Rent payment");
+      expect(result.memo).toBe("Transfer | Rent payment");
+    });
+
+    it("prioritizes rawText over description in memo", () => {
+      const txn = createMockTransaction("Amazon", -1169);
+      txn.attributes.rawText = "AMAZON AU MARKETPLACE Sydney";
+
+      const result = mapToYnabTransaction(txn, scenario);
+
+      expect(result.memo).toBe("AMAZON AU MARKETPLACE Sydney");
+    });
+
+    it("combines all memo parts correctly", () => {
+      const txn = createMockTransaction("Wise", -360000);
+      txn.attributes.rawText = "Wise Australia Pty Ltd";
+      txn.attributes.message = "P34351157";
+      txn.attributes.foreignAmount = {
+        currencyCode: "USD",
+        value: "-2500.00",
+        valueInBaseUnits: -250000,
+      };
+
+      const result = mapToYnabTransaction(txn, scenario);
+
+      expect(result.memo).toBe(
+        "Wise Australia Pty Ltd | USD -2500.00 | P34351157"
+      );
     });
   });
 

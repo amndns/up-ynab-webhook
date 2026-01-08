@@ -17,6 +17,7 @@ export const CATEGORY_NAME_TO_ID: Record<string, string | null> = {
   Subscriptions: "cfabaa56-f3e8-4870-a818-94399d450416",
   Unintended: "223d4d8e-c244-43b6-9399-a3b5a1f3a0d8",
   Stocks: "5ff5f845-bf41-41fc-965b-d7ee9a4f30e8",
+  "Home Ownership": "73fdf321-90a1-4065-a196-26d9d2cc8a32",
   Business: "d90364b7-d504-4cf4-bf31-00bef318bdcb",
   Gym: "444348b9-ccee-4773-981c-1159326202ab",
   Care: "1546a35d-9ee2-48e7-81c8-e0dbe06d2d6b",

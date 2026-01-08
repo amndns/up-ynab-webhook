@@ -29,14 +29,23 @@ export function mapToYnabTransaction(
 
   // Build memo with useful context
   const memoParts: string[] = [];
+
+  // Priority: rawText > description
+  const merchantInfo = attrs.rawText || attrs.description || null;
+  if (merchantInfo) {
+    memoParts.push(merchantInfo);
+  }
+
   if (attrs.foreignAmount) {
     memoParts.push(
       `${attrs.foreignAmount.currencyCode} ${attrs.foreignAmount.value}`
     );
   }
+
   if (attrs.message) {
     memoParts.push(attrs.message);
   }
+
   const memo = memoParts.length > 0 ? memoParts.join(" | ") : undefined;
 
   // Transfer scenarios use payee_id
