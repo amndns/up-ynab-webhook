@@ -14,12 +14,13 @@ Cloudflare Worker that automatically syncs transactions from Up Bank to YNAB usi
 
 ## Architecture
 
-```
-Up Bank Webhook → Verify Signature → Fetch Transaction → Determine Scenario
-                                                               ↓
-                                                         Categorize (LLM)
-                                                               ↓
-                                                         Create in YNAB
+```mermaid
+flowchart LR
+    A[Up Bank Webhook] --> B[Verify Signature]
+    B --> C[Fetch Transaction]
+    C --> D[Determine Scenario]
+    D --> E[Categorize via LLM]
+    E --> F[Create in YNAB]
 ```
 
 ## Setup
@@ -102,11 +103,26 @@ pnpm test:watch
 
 ## Transaction Status Logic
 
-| Type                    | CREATED + HELD | CREATED + SETTLED | SETTLED Event       |
-| ----------------------- | -------------- | ----------------- | ------------------- |
-| Card payments           | ✅ Process     | ✅ Process        | ❌ Skip (duplicate) |
-| Pay Anyone/Direct Debit | ❌ Wait        | ✅ Process        | ✅ Process          |
-| Transfer/Interest       | N/A            | ✅ Process        | N/A                 |
+```mermaid
+flowchart TD
+    W[Webhook Event] --> E{Event Type?}
+    E -->|PING / DELETED| IGN[Ignore]
+    E -->|CREATED / SETTLED| T{Known Type?}
+    T -->|No| LOG[Log & Ignore]
+    T -->|Yes| S{Status & Type}
+    S -->|"Card payment + HELD"| P1[✅ Process now]
+    S -->|"Card payment + SETTLED"| P1S[❌ Skip — already processed]
+    S -->|"Bank transfer + HELD"| WAIT[❌ Wait for settlement]
+    S -->|"Bank transfer + SETTLED"| P2[✅ Process now]
+    S -->|"Transfer / Interest + SETTLED"| P3[✅ Process now]
+```
+
+| Type                                  | CREATED + HELD | CREATED + SETTLED | SETTLED Event       |
+| ------------------------------------- | -------------- | ----------------- | ------------------- |
+| Card payments                         | ✅ Process     | ✅ Process        | ❌ Skip (duplicate) |
+| Pay Anyone/Direct Debit/Direct Credit | ❌ Wait        | ✅ Process        | ✅ Process          |
+| Salary/Deposit                        | ❌ Wait        | ✅ Process        | ✅ Process          |
+| Transfer/Interest                     | N/A            | ✅ Process        | N/A                 |
 
 ## File Structure
 

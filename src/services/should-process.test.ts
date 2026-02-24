@@ -122,6 +122,14 @@ describe("shouldProcess", () => {
         expect(result.process).toBe(false);
         expect(result.reason).toBe("WAITING_FOR_SETTLED");
       });
+
+      it("does not process Direct Credit when HELD", () => {
+        const txn = createMockTransaction("HELD", "Direct Credit");
+        const result = shouldProcess("TRANSACTION_CREATED", txn);
+
+        expect(result.process).toBe(false);
+        expect(result.reason).toBe("WAITING_FOR_SETTLED");
+      });
     });
 
     describe("immediate types (card payments)", () => {
@@ -155,6 +163,14 @@ describe("shouldProcess", () => {
 
       it("processes Direct Debit when settled", () => {
         const txn = createMockTransaction("SETTLED", "Direct Debit");
+        const result = shouldProcess("TRANSACTION_SETTLED", txn);
+
+        expect(result.process).toBe(true);
+        expect(result.reason).toBe("DEFERRED_NOW_SETTLED");
+      });
+
+      it("processes Direct Credit when settled", () => {
+        const txn = createMockTransaction("SETTLED", "Direct Credit");
         const result = shouldProcess("TRANSACTION_SETTLED", txn);
 
         expect(result.process).toBe(true);

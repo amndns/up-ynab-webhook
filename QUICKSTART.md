@@ -120,6 +120,8 @@ You should see:
 | Up Bank Transaction        | YNAB Result                                 |
 | -------------------------- | ------------------------------------------- |
 | Card payment (spending)    | ✅ Debit in "Up Payroll" + auto-categorized |
+| Payroll / Direct Credit    | ✅ Credit in "Up Payroll" + auto-categorized |
+| Salary                     | ✅ Credit in "Up Payroll" + auto-categorized |
 | Interest (saver)           | ✅ Credit in "Up Savings"                   |
 | Transfer spending→saver    | ✅ YNAB transfer between accounts           |
 | Transfer to joint account  | ✅ Debit in "Up Payroll" only               |

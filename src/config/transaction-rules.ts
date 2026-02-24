@@ -16,6 +16,7 @@ export const PROCESS_ON_SETTLED_ONLY = new Set([
   "Payment", // Generic payment type (e.g., Wise, other services)
   "Pay Anyone",
   "Direct Debit",
+  "Direct Credit", // Payroll / employer direct credits
   "Salary",
   "Deposit", // Request payments received from others
 ]);
@@ -37,6 +38,7 @@ export const KNOWN_TRANSACTION_TYPES = new Set([
   "Payment", // Generic payment type (e.g., Wise, other services)
   "Pay Anyone",
   "Direct Debit",
+  "Direct Credit", // Payroll / employer direct credits
   "Salary",
   "Deposit", // Request payments received from others (income)
 
